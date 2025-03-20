@@ -1,12 +1,13 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Star } from 'lucide-react';
 import { books } from '@/data/books';
 
-export default function BookList() {
+function BookListContent() {
   const searchParams = useSearchParams();
   const category = searchParams.get('category');
 
@@ -55,5 +56,24 @@ export default function BookList() {
         ))}
       </div>
     </div>
+  );
+}
+
+export default function BookList() {
+  return (
+    <Suspense fallback={
+      <div className="container mx-auto px-4 py-8">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-8"></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="bg-gray-200 dark:bg-gray-700 rounded-lg aspect-[3/4]"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    }>
+      <BookListContent />
+    </Suspense>
   );
 } 
